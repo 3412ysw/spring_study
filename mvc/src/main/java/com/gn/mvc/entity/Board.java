@@ -3,6 +3,7 @@ package com.gn.mvc.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +41,7 @@ public class Board {
 	@Column(updatable=false,name="reg_date")
 	private LocalDateTime regDate;
 	
-	@CreationTimestamp
+	@UpdateTimestamp
 	@Column(insertable=false,name="mod_date")
 	private LocalDateTime modDate;
 	

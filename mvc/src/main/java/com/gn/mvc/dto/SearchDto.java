@@ -21,4 +21,5 @@ public class SearchDto {
 
 	private int search_type;
 	private String search_text; //html name 정보와 일치
+	private int order_type;
 }

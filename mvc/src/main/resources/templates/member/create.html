@@ -44,8 +44,12 @@ layout:decorate="~{/include/layout}">
 				}else{
 					const payload = new FormData(form); //객체화 name이 key value가 값 쌍으로 가져옴 
 					// url 자원만 표시 
-					fetch("/member",{
+					fetch("/signup",{
 						method:'post',
+						headers : {
+							'header': document.querySelector('meta[name="_csrf_header"]').content,
+				             'X-CSRF-Token': document.querySelector('meta[name="_csrf"]').content
+						},
 						body:payload,
 					})
 					.then(response => response.json())

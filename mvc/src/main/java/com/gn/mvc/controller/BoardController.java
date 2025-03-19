@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,13 +82,13 @@ public class BoardController {
 			if(attachDto != null) attachDtoList.add(attachDto);
 		}
 		
-		if(dto.getFiles().size() == attachDtoList.size()) {
-			int result = service.createBoard(dto,attachDtoList);
-			if(result>0) {
-				resultMap.put("res_code", "200");
-				resultMap.put("res_msg", "게시글이 등록되었습니다.");
-			}
+
+		int result = service.createBoard(dto,attachDtoList);
+		if(result>0) {
+			resultMap.put("res_code", "200");
+			resultMap.put("res_msg", "게시글이 등록되었습니다.");
 		}
+		
 		
 		// Service가 가지고 있는 createBoard 메소드 호출
 //		BoardDto result = service.createBoard(dto);
@@ -142,19 +143,37 @@ public class BoardController {
 
 	@PostMapping("/board/{id}/update")
 	@ResponseBody
-	public Map<String,String> updateBoardApi(BoardDto param) {
+	public Map<String,String> updateBoardApi(@PathVariable("id") Long id,BoardDto param) {
 		
 		Map<String,String> resultMap = new HashMap<String,String>();
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "게시글 수정 중 오류가 발생하였습니다.");
 		
-		logger.info("삭제 파일 정보 : "+param.getDelete_files());
+//		logger.info("삭제 파일 정보 : "+param.getDelete_files());
 		
 		// 1. BoardDto 출력(전달 확인)
 		logger.debug(param.toString());
-		// 2. BoardService -> BoardRepository 게시글 수정(save)
-//		Board saved = service.updateBoard(param);
-//		// 3. 수정 결과 Entity가 null이 아니면 성공 그외에는 실패
+//		 2. BoardService -> BoardRepository 게시글 수정(save) -> 파일 삭제
+		
+		// 파일 추가
+		
+		List<AttachDto> attachDtoList = new ArrayList<AttachDto>();
+		
+		for(MultipartFile mf : param.getFiles()) {
+			AttachDto attachDto = attachService.uploadFile(mf);
+			if(attachDto != null) attachDtoList.add(attachDto);
+		}		
+		
+		
+		int result = service.updateBoard(param,attachDtoList);
+	
+		if(result>0) {
+			resultMap.put("res_code", "200");
+			resultMap.put("res_msg", "게시글이 수정되었습니다.");
+		}
+
+		
+		// 3. 수정 결과 Entity가 null이 아니면 성공 그외에는 실패
 //		if(saved != null) {
 //			resultMap.put("res_code","200");
 //			resultMap.put("res_msg", "게시글 수정에 성공하였습니다.");

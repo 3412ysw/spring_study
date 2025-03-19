@@ -28,6 +28,45 @@ public class AttachService {
 	private final BoardRepository boardRepository;
 	private final AttachRepository attachRepository;
 	
+	// 파일 메타 데이터 삭제
+	public int deleteMetaData(Long attach_no) {
+		int result = 0;
+		try {
+			Attach target = attachRepository.findById(attach_no).orElse(null);
+			if(target != null) {
+				attachRepository.delete(target);
+			}
+			result = 1;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// 파일 자체 메모리에서 삭제
+	public int deleteFileData(Long attach_no) {
+		int result = 0;
+		try {
+			Attach attach = attachRepository.findById(attach_no).orElse(null);
+			if(attach != null) {
+				// 조회한게 메타데이터 존재 -> 파일 삭제 
+				// 파일 객체 만들어줌
+				File file = new File(attach.getAttatchPath());
+				// 파일이 존재하면 삭제
+				if(file.exists()) {
+					file.delete();
+				}
+			}
+			
+			result = 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 	public Attach selectAttachOne(Long id) {
 		return attachRepository.findById(id).orElse(null);
 	}

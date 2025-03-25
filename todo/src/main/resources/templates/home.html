@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block layout:fragment="content">
+<section>
+	<h1>할 일 목록</h1>
+	<form action="/todo" name="search_form" method="get">
+		<label for="search">내용 : </label>
+		<input type="text" name="search_text" th:value="${searchDto.search_text}">
+		<input type="submit" value="검색하기">
+	</form><br><br>
+	<div class="todo_list">
+		<table border="1">
+			<thead>
+				<tr>
+					<th>완료</th>
+					<th>번호</th>
+					<th>내용</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${!#lists.isEmpty(todoList)}"
+					th:each="todo, todoStatus : ${todoList}">
+					<td><input type="checkbox" th:checked="${todo.flag=='Y'}" th:onchange="|javascript:todoUpdate('${todo.no}')|"></td>
+					<td th:text="${(pageDto.nowPage-1)*(pageDto.numPerPage)+todoStatus.count}"></td>
+					<td th:text="${todo.content}"></td>
+					<td><button th:onclick="|javascript:todoDelete('${todo.no}')|">삭제</button></td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(todoList)}">
+					<td colspan="4">할 일 목록이 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<div class="pagination">
+			<a th:if="${pageDto.prev}"
+				th:href="@{/todo(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">
+				&laquo;</a>
+			<a th:each="num : ${#numbers.sequence(pageDto.pageBarStart,pageDto.pageBarEnd)}"
+				th:text="${num}" class="page-link"
+				th:classappend="${pageDto.nowPage == num} ? 'active' "
+				th:href="@{/todo(nowPage=${num},serach_text=${searchDto.search_text})}">
+				번호
+			</a>
+			<a th:if="${pageDto.next}"
+				th:href="@{/todo(nowPage=${pageDto.pageBarEnd+1},search_text=${searchDto.search_text})}">
+				&raquo;</a>
+		</div>
+	</div>
+	<h1>할 일 추가</h1>
+	<form name="create_form">
+		<input type="text" name="content" placeholder="할 일을 입력하세요.">
+		<input type="hidden" name="flag" value="N">
+		<input type="submit" value="추가하기"> 
+	</form>
+</section>
+<script>
+	const form = document.create_form;
+	form.addEventListener('submit',(e)=>{
+		e.preventDefault();
+		
+		// 정보 유무 체크
+		if(!form.content.value){
+			alert("할 일을 입력해주세요.");
+			return;
+		}else{
+			const payload = new FormData(form);
+			fetch("/create",{
+				method:'post',
+				body:payload,
+			})
+			.then(response => response.json())
+			.then(data =>{
+				alert(data.res_msg);
+				if(data.res_code == "200"){
+					location.href="/";
+				}
+				console.log(data);
+			})
+		}
+		
+	})
+	
+	const todoDelete = function(no){
+		if(confirm("게시글을 삭제하시겠습니까?")){
+			fetch('/todo/'+no,{method:'delete'})
+			.then(response => response.json())
+			.then(data => {
+				alert(data.res_msg);
+				if(data.res_code == 200) {
+					location.href='/';
+				}
+			});
+		}
+	}
+	
+	const todoUpdate = function(no){
+		console.log(no);
+		fetch('/todo/'+no+"/update",{method:'post'})
+		.then(response => response.json())
+		.then(data => {
+			if(data.res_code == 500) {
+				alert(data.res_msg);
+			}
+		});
+		
+	}
+	
+
+
+</script>	
+	
+	
+</th:block>
+</html>

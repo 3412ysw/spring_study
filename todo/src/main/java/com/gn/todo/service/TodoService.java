@@ -24,6 +24,12 @@ public class TodoService {
 
 	private final TodoRepository repository;
 	
+//	public Todo createTodoOne(TodoDto dto) {
+//		Todo entity = dto.toEntity();
+//		Todo result = repository.save(entity); 
+//		return result;
+//	}
+	
 	public int createTodo(TodoDto dto) {
 		int result = 0;
 		try {

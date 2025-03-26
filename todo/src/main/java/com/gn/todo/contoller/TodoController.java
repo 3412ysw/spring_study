@@ -1,9 +1,7 @@
 package com.gn.todo.contoller;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -39,6 +37,10 @@ public class TodoController {
 		
 		pageDto.setTotalPage(resultList.getTotalPages());
 		
+		if(resultList.isEmpty()) {
+			resultList = null;
+		}
+		
 		model.addAttribute("todoList",resultList);
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("pageDto",pageDto);
@@ -47,8 +49,24 @@ public class TodoController {
 	}
 	
 	
+//	@PostMapping("/todo/create") 
+//	@ResponseBody
+//	public Map<String,String> createTodoApi(TodoDto dto) {
+//		Map<String,String> resultMap = new HashMap<String,String>();
+//		resultMap.put("res_code", "500");
+//		resultMap.put("res_msg", "등록 중 오류가 발생하였습니다.");
+//		
+//		Todo result = service.createTodoOne(dto);
+//	
+//		if(result != null) {
+//			resultMap.put("res_code", "200");
+//			resultMap.put("res_msg", "등록이 완료되었습니다.");
+//		}
+//		
+//		return resultMap;
+//	}
 	
-	@PostMapping("/create")
+	@PostMapping("/create") // todo/create
 	@ResponseBody
 	public Map<String,String> createTodoApi(TodoDto dto) {
 		Map<String,String> resultMap = new HashMap<String,String>();

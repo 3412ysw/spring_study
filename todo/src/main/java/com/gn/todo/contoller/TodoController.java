@@ -106,13 +106,13 @@ public class TodoController {
 		
 		Map<String,String> resultMap = new HashMap<String,String>();
 		resultMap.put("res_code", "500");
-		resultMap.put("res_msg", "게시글 수정 중 오류가 발생하였습니다.");
+		resultMap.put("res_msg", "수정 중 오류가 발생하였습니다.");
 		
 		int result = service.updateTodo(id);
 	
 		if(result>0) {
 			resultMap.put("res_code", "200");
-			resultMap.put("res_msg", "게시글이 수정되었습니다.");
+			resultMap.put("res_msg", "수정되었습니다.");
 		}
 
 		return resultMap;

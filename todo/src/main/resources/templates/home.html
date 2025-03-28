@@ -118,6 +118,30 @@
 
 <body>
 	<div class="container">
+		<br><h1>| 파일 목록 |</h1>
+		<form name="create_file_form" >
+			<input type="file" name="files" multiple>
+			<input type="submit" value="업로드">
+		</form>
+		<script>
+		const fileForm = document.create_file_form;
+		fileForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+			
+			const payload = new FormData(fileForm); 
+			fetch("/attach/create",{
+				method:'post',
+				body:payload,
+			})
+			.then(response => response.json())
+			.then(data =>{
+				console.log(data);
+				location.href="/";
+			})
+			
+		});
+
+		</script>
 		<br><h1>| 할 일 목록 |</h1>
 		<!-- 검색 폼 -->
 		<form action="/todo" name="search_form" method="get" class="form-container">

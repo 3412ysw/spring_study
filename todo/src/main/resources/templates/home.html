@@ -129,7 +129,7 @@
 			e.preventDefault();
 			
 			const payload = new FormData(fileForm); 
-			fetch("/attach/create",{
+			fetch("/s3/uplaod",{
 				method:'post',
 				body:payload,
 			})

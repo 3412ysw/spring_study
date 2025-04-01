@@ -1,16 +1,29 @@
 package com.gn.todo.contoller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gn.todo.dto.AttachDto;
+import com.gn.todo.entity.Attach;
 import com.gn.todo.service.AttachService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,6 +62,33 @@ public class AttachController {
 		}
 		
 		return resultMap;
+	}
+	
+	@GetMapping("/download/{id}")
+	public ResponseEntity<Object> fileDownlod(@PathVariable("id") Long id) {
+		try {
+			Attach fileData = attachService.selectAttachOne(id);
+			
+			// 파일이 없으면 notFound 에러 발생시킴
+			if(fileData == null) return ResponseEntity.notFound().build();
+			
+			Path filePath = Paths.get(fileData.getAttachPath());
+			Resource resource = new InputStreamResource(Files.newInputStream(filePath));
+			
+			String oriFileName = fileData.getOriName();
+			String encodedName = URLEncoder.encode(oriFileName, StandardCharsets.UTF_8);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+encodedName);
+			
+			return new ResponseEntity<Object>(resource,headers,HttpStatus.OK);
+
+		} catch(Exception e) {
+ 			e.printStackTrace();
+ 			return ResponseEntity.badRequest().build();
+ 		}
+		
+		
 	}
 	
 }

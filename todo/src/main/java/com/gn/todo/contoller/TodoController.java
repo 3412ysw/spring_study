@@ -2,6 +2,7 @@ package com.gn.todo.contoller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gn.todo.dto.PageDto;
 import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
+import com.gn.todo.entity.Attach;
 import com.gn.todo.entity.Todo;
+import com.gn.todo.service.AttachService;
 import com.gn.todo.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class TodoController {
 
 	private final TodoService service;
+	private final AttachService attachService;
 	
 	
 	@GetMapping({"","/","/todo"})
@@ -41,9 +45,12 @@ public class TodoController {
 			resultList = null;
 		}
 		
+		List<Attach> attachList = attachService.selectAttachList();
+		
 		model.addAttribute("todoList",resultList);
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("pageDto",pageDto);
+		model.addAttribute("attachList",attachList);
 		
 		return "home";
 	}
@@ -117,5 +124,6 @@ public class TodoController {
 
 		return resultMap;
 	}
+	
 	
 }

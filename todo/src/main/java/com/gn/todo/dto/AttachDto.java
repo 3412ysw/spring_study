@@ -27,7 +27,7 @@ public class AttachDto {
 				.attachNo(attach_no)
 				.oriName(ori_name)
 				.newName(new_name)
-				.attatchPath(attach_path)
+				.attachPath(attach_path)
 				.build();
 	}
 	

@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Entity
 @Table(name="attach")
 @Builder
@@ -30,6 +32,6 @@ public class Attach {
 	private String newName;
 	
 	@Column(name="attach_path")
-	private String attatchPath;;
+	private String attachPath;;
 	
 }

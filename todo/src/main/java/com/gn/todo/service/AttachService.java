@@ -86,4 +86,12 @@ public class AttachService {
 		
 		return result;
 	}
+	
+	public Attach selectAttachOne(Long id) {
+		return attachRepository.findById(id).orElse(null);
+	}
+
+	public List<Attach> selectAttachList() {
+		return attachRepository.findAll();
+	}
 }

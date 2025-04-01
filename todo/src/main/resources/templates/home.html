@@ -1,154 +1,180 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>할 일 목록</title>
 <!-- Bootstrap CDN 추가 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJhoQxXNCcIC1qfYo9jnp6CzzVbxBwvY8WRyjpZpGBe1TxKr4lbGfyoH5zJd" crossorigin="anonymous">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 <style>
-    body {
-        background-color: #fff; /* 하얀색 배경 */
-        font-family: 'Arial', sans-serif;
-    }
+body {
+	background-color: #fff; /* 하얀색 배경 */
+	font-family: 'Arial', sans-serif;
+}
 
-    h1 {
-        text-align: center;
-        color: #4b4b4b;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
+h1 {
+	text-align: center;
+	color: #4b4b4b;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
 
-    .todo_list {
-        width: 80%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
+.todo_list {
+	width: 80%;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 12px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #fff;
-        border-radius: 12px;
-        overflow: hidden;
-    }
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: #fff;
+	border-radius: 12px;
+	overflow: hidden;
+}
 
-    table th, table td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #e0e0e0;
-    }
+table th, table td {
+	padding: 12px;
+	text-align: center;
+	border: 1px solid #e0e0e0;
+}
 
-    table thead {
-        background-color: #f7cac9; /* 파스텔 핑크색 */
-        color: white;
-    }
+table thead {
+	background-color: #f7cac9; /* 파스텔 핑크색 */
+	color: white;
+}
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 20px;
-    }
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 20px;
+}
 
-    .pagination a {
-        padding: 8px 16px;
-        text-decoration: none;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        color: #333;
-        background: white;
-        transition: background 0.3s ease;
-    }
+.pagination a {
+	padding: 8px 16px;
+	text-decoration: none;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	color: #333;
+	background: white;
+	transition: background 0.3s ease;
+}
 
-    .pagination a:hover {
-        background: #f7cac9; /* 파스텔 핑크색 */
-        color: white;
-    }
+.pagination a:hover {
+	background: #f7cac9; /* 파스텔 핑크색 */
+	color: white;
+}
 
-    .todo_list button {
-        padding: 8px 16px;
-        background-color: #d3d3d3; /* 회색 버튼 */
-        border: none;
-        border-radius: 8px;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* 약간의 입체감 */
-        transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
+.todo_list button {
+	padding: 8px 16px;
+	background-color: #d3d3d3; /* 회색 버튼 */
+	border: none;
+	border-radius: 8px;
+	color: white;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* 약간의 입체감 */
+	transition: background 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .todo_list button:hover {
-        background-color: #a9a9a9; /* 버튼 hover 시 더 어두운 회색 */
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 더 강한 입체감 */
-    }
+.todo_list button:hover {
+	background-color: #a9a9a9; /* 버튼 hover 시 더 어두운 회색 */
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 더 강한 입체감 */
+}
 
-    .form-container {
-        width: 80%;
-        margin: 20px auto;
-        padding: 30px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
+.form-container {
+	width: 80%;
+	margin: 20px auto;
+	padding: 30px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
 
-    .form-container input[type="text"] {
-        width: 80%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-    }
+.form-container input[type="text"] {
+	width: 80%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
 
-    .form-container input[type="submit"] {
-        padding: 10px 20px;
-        background-color: #d3d3d3; /* 회색 버튼 */
-        border: none;
-        border-radius: 8px;
-        color: white;
-        cursor: pointer;
-        transition: background 0.3s ease;
-    }
+.form-container input[type="submit"] {
+	padding: 10px 20px;
+	background-color: #d3d3d3; /* 회색 버튼 */
+	border: none;
+	border-radius: 8px;
+	color: white;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
 
-    .form-container input[type="submit"]:hover {
-        background-color: #a9a9a9;
-    }
+.form-container input[type="submit"]:hover {
+	background-color: #a9a9a9;
+}
 </style>
-</head>	
+</head>
 
 <body>
 	<div class="container">
-		<br><h1>| 파일 목록 |</h1>
-		<form name="create_file_form" >
-			<input type="file" name="files" multiple>
-			<input type="submit" value="업로드">
+		<br>
+		<h1>| 파일 목록 |</h1>
+		<form name="create_file_form" class="form-container">
+			<input type="file" name="files" class="form-control" multiple>
+			<input type="submit" value="업로드" class="btn btn-secondary mt-2">
 		</form>
+		<br>
+		<div class="todo_list">
+			<table class="table" th:if="${!#lists.isEmpty(attachList)}">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>다운로드</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="attach, attachStatus : ${attachList}">
+						<td th:text="${attachStatus.count}">번호</td>
+						<td><a
+							th:onclick="|location.href='@{/s3/download/{id}(id=${attach.attachNo})}'|"
+							th:text="${attach.oriName}"> 파일명 </a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<script>
 		const fileForm = document.create_file_form;
 		fileForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 			
 			const payload = new FormData(fileForm); 
-			fetch("/s3/uplaod",{
+			fetch("/s3/upload",{
 				method:'post',
 				body:payload,
 			})
 			.then(response => response.json())
 			.then(data =>{
-				console.log(data);
+				console.log(data.res_msg);
 				location.href="/";
 			})
 			
 		});
 
 		</script>
-		<br><h1>| 할 일 목록 |</h1>
+		<br>
+		<h1>| 할 일 목록 |</h1>
 		<!-- 검색 폼 -->
 		<form action="/todo" name="search_form" method="get" class="form-container">
-			<label for="search">내용 : </label>
-			<input type="text" name="search_text" th:value="${searchDto.search_text}" class="form-control">
+			<label for="search">내용 : </label> <input type="text"
+				name="search_text" th:value="${searchDto.search_text}"class="form-control"> 
 			<input type="submit" value="검색하기" class="btn btn-secondary mt-2">
-		</form><br><br>
+		</form>
+		<br>
+		<br>
 
 		<div class="todo_list">
 			<table class="table">
@@ -161,11 +187,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:if="${!#lists.isEmpty(todoList)}" th:each="todo, todoStatus : ${todoList}">
-						<td><input type="checkbox" th:checked="${todo.flag=='Y'}" th:onchange="|javascript:todoUpdate('${todo.no}')|"></td>
-						<td th:text="${(pageDto.nowPage-1)*(pageDto.numPerPage)+todoStatus.count}"></td>
+					<tr th:if="${!#lists.isEmpty(todoList)}"
+						th:each="todo, todoStatus : ${todoList}">
+						<td><input type="checkbox" th:checked="${todo.flag=='Y'}"
+							th:onchange="|javascript:todoUpdate('${todo.no}')|"></td>
+						<td
+							th:text="${(pageDto.nowPage-1)*(pageDto.numPerPage)+todoStatus.count}"></td>
 						<td th:text="${todo.content}"></td>
-						<td><button th:onclick="|javascript:todoDelete('${todo.no}')|">삭제</button></td>
+						<td><button
+								th:onclick="|javascript:todoDelete('${todo.no}')|">삭제</button></td>
 					</tr>
 					<tr th:if="${#lists.isEmpty(todoList)}">
 						<td colspan="4" class="text-center">조회된 데이터가 없습니다.</td>
@@ -176,27 +206,39 @@
 
 		<!-- 페이징 -->
 		<div class="pagination">
-			<a th:if="${pageDto.prev}" th:href="@{/todo(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">&laquo;</a>
-			<a th:each="num : ${#numbers.sequence(pageDto.pageBarStart,pageDto.pageBarEnd)}"
+			<a th:if="${pageDto.prev}"
+				th:href="@{/todo(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">&laquo;</a>
+			<a
+				th:each="num : ${#numbers.sequence(pageDto.pageBarStart,pageDto.pageBarEnd)}"
 				th:text="${num}" class="page-link"
 				th:classappend="${pageDto.nowPage == num} ? 'active' "
 				th:href="@{/todo(nowPage=${num},search_text=${searchDto.search_text})}">번호</a>
-			<a th:if="${pageDto.next}" th:href="@{/todo(nowPage=${pageDto.pageBarEnd+1},search_text=${searchDto.search_text})}">&raquo;</a>
+			<a th:if="${pageDto.next}"
+				th:href="@{/todo(nowPage=${pageDto.pageBarEnd+1},search_text=${searchDto.search_text})}">&raquo;</a>
 		</div>
 
 		<!-- 할 일 추가 -->
-		<br><br><br><br>
+		<br>
+		<br>
+		<br>
+		<br>
 		<h1>| 할 일 추가 |</h1>
 		<form name="create_form" class="form-container">
-			<input type="text" name="content" placeholder="할 일을 입력하세요." class="form-control">
-			<input type="hidden" name="flag" value="N">
-			<input type="submit" value="추가하기" class="btn btn-secondary mt-2">
+			<input type="text" name="content" placeholder="할 일을 입력하세요."
+				class="form-control"> <input type="hidden" name="flag" value="N"> 
+				<input type="submit" value="추가하기" class="btn btn-secondary mt-2">
 		</form>
 	</div>
 
 	<!-- Bootstrap JS & Popper.js CDN -->
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybB6zML6Qs7S9xsf3p5fe8Ff3D0K6xaYhQ5Lyg6g5Nb3He9p8o" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0p5xD1t0DYyqI3Sh2nMlkkjE57WYuH0FZBOlLviEVksJFXKv" crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+		integrity="sha384-oBqDVmMz4fnFO9gybB6zML6Qs7S9xsf3p5fe8Ff3D0K6xaYhQ5Lyg6g5Nb3He9p8o"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+		integrity="sha384-pzjw8f+ua7Kw1TIq0p5xD1t0DYyqI3Sh2nMlkkjE57WYuH0FZBOlLviEVksJFXKv"
+		crossorigin="anonymous"></script>
 
 	<script>
 		const form = document.create_form;

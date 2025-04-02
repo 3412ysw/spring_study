@@ -145,6 +145,20 @@ table thead {
 					</tr>
 				</tbody>
 			</table>
+			<table class="table" th:if="${#lists.isEmpty(attachList)}">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>다운로드</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="2">번호</td>
+						<td>파일 없져용</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<script>
 		const fileForm = document.create_file_form;

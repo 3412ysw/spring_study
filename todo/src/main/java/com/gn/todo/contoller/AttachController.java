@@ -42,7 +42,7 @@ public class AttachController {
 	@PostMapping("/attach/create")
 	@ResponseBody
 	public Map<String,String> createAttachApi(@RequestParam("files") List<MultipartFile> files){
-		System.out.println("ci/cd test4");
+		System.out.println("ci/cd test5");
 		Map<String,String> resultMap = new HashMap<String,String>();
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "파일 등록 중 오류가 발생하였습니다.");

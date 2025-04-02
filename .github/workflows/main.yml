@@ -21,4 +21,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-          
+            cd /home/ubuntu/app/todo
+            ls -l
+
+            echo "Check GitHub Action Working"
